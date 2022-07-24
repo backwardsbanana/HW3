@@ -27,20 +27,17 @@ jp.joyplot(goals_by_year_both_teams, by="Year", legend=True, figsize=(7, 7), yli
 plt.show()
 
 #Q5
-top5_home_goals = frame.groupby(["Home Team Initials"])["Home Team Goals"].count().reset_index().sort_values(by="Home Team Goals", ascending=False, ignore_index=True)[0:5]
-sb.barplot(x=top5_home_goals["Home Team Initials"], y=top5_home_goals["Home Team Goals"])
+top_home_goals = frame.groupby(["Home Team Initials"], as_index=True).sum().reset_index().sort_values(by="Home Team Goals", ignore_index=True, ascending=False)
+sb.barplot(x=top_home_goals["Home Team Initials"][0:5], y=top_home_goals["Home Team Goals"][0:5])
 plt.show()
 
-#Q6 Cant get groupby to work for finding the Away Team Goals
-
-top5_away_goals = frame.groupby(["Home Team Initials"])["Away Team Goals"].count().reset_index().sort_values(by="Away Team Goals", ascending=False, ignore_index=True)[0:5]
-#plt.style.use("dark_background")
-
-#jp.joyplot(data=NOTHING_HERE, column=["Home Team Goals", "Away Team Goals"], by="Home Team Initials", legend=True, figsize=(7, 7), ylim="own")
-#plt.show()
+#Q6 I think I was using count instead of sum and also tried to use groupby twice?
+top5_away_goals = top_home_goals[0:5]
+jp.joyplot(data=top5_away_goals, column=["Home Team Goals", "Away Team Goals"], by="Home Team Initials", legend=True, figsize=(7, 7), ylim="own")
+plt.show()
 
 #Q7
 
-#plt.style.use("ggplot")
-#pplot(data=NOTHING_HERE, x="Home Team Goals", y="Away Team Goals", kind = 'qq', display_kws={"identity":True}, height=4, aspect=2)
-#plt.show()
+plt.style.use("ggplot")
+pplot(data=top5_away_goals, x="Home Team Goals", y="Away Team Goals", kind = 'qq', display_kws={"identity":True}, height=4, aspect=2)
+plt.show()
